@@ -1,5 +1,5 @@
 # infoware
-interview
+interview question with Node.js backend and MongoDB database
 
 cd infoware
 
