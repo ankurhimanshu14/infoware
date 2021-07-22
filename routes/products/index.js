@@ -1,5 +1,4 @@
 module.exports = {
     registration: require('./registration'),
-    browse: require('./browse'),
-    createOrders: require('./createOrders'),
+    browse: require('./browse')
 }

@@ -13,10 +13,15 @@ module.exports = {
             [USER_FIELDS.EMAIL]: req.body.email,
             [USER_FIELDS.USERNAME]: req.body.username,
             [USER_FIELDS.PASSWORD]: req.body.password,
-            [USER_FIELDS.USER_TYPE]: req.body.userType
+            [USER_FIELDS.USER_TYPE]: req.body.userType,
+            [USER_FIELDS.EMPLOYEE_ID]: req.body.employeeId
         });
 
-        next();
+        if (req._newUser.userType === 'admin' && req._newUser.employeeId === undefined) {
+            res.send("Employee ID of admin is a must")
+        } else {
+            next();
+        }
     },
 
     saveToMongo: async(req, res, next) => {

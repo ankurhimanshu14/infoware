@@ -2,7 +2,8 @@ const router = require('express').Router();
 const auth = require('./auth');
 
 const { registration: userRegistration, authenticate: userAuth, logout: userLogout } = require('../users');
-const { registration: productRegistration, browse: productBrowse, createOrders: createOrders } = require('../products');
+const { registration: productRegistration, browse: productBrowse } = require('../products');
+const { createOrders, viewOrders } = require('../orders');
 
 //ADMIN
 router.post('/users/registration', userRegistration.fetchData, userRegistration.saveToMongo, userRegistration.response);
@@ -12,6 +13,9 @@ router.get('/private/users/logout', auth, userLogout.deleteTokens);
 //PRODUCT
 router.post('/products/registration', auth, productRegistration.verifyUser, productRegistration.fetchNewProductData, productRegistration.saveProductData, productRegistration.response);
 router.post('/products/view', auth, productBrowse.fetchFromMongo, productBrowse.response);
-router.post('/products/order', auth, createOrders.fetchData, createOrders.saveToMongo, createOrders.response);
+
+//ORDER
+router.post('/orders/new', auth, createOrders.fetchData, createOrders.saveToMongo, createOrders.response);
+router.get('/orders/view', auth, viewOrders.verifyUser, viewOrders.fetchFromMongo, viewOrders.response);
 
 module.exports = router;

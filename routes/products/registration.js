@@ -1,6 +1,5 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
 const { PRODUCT_FIELDS, PRODUCT_MODEL } = require('../../models/products');
 
 const jwtKey = process.env.JWT_SECRET_KEY;
@@ -23,9 +22,6 @@ module.exports = {
     fetchNewProductData: (req, res, next) => {
         
         if (req._verifiedUser.data) {
-            let file = fs.readFileSync(req.body.imageUrl);
-
-            _encode = Buffer.from(file).toString('base64');
 
             req._newProduct = new PRODUCT_MODEL({
                 [PRODUCT_FIELDS.SKU]: req.body.sku,
@@ -39,7 +35,9 @@ module.exports = {
                 [PRODUCT_FIELDS.COLOR]: req.body.color,
                 [PRODUCT_FIELDS.UOM]: req.body.uom,
                 [PRODUCT_FIELDS.INVENTORY]: req.body.inventory,
-                [PRODUCT_FIELDS.IMAGE_URL]: _encode
+                [PRODUCT_FIELDS.IMAGE_URL]: req.body.imageUrl,
+                [PRODUCT_FIELDS.MANUFACTURER]: req.body.manufacturer,
+                [PRODUCT_FIELDS.RETAILER]: req.body.retailer
             });
     
             // fetch user data here from cookies

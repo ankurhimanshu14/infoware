@@ -3,8 +3,6 @@ const { PRODUCT_MODEL } = require('../../models/products');
 const fs = require('fs');
 require('dotenv').config();
 
-let IMG_PATH = process.env.IMG_PATH;
-
 module.exports = {
 
     fetchFromMongo: async (req, res, next) => {
@@ -32,19 +30,6 @@ module.exports = {
 
     response: (req, res, next) => {
         const { status, error, data, msg } = req._productDetails;
-
-        for (let d of data) {
-
-            let decode = Buffer.from(d.imageUrl, 'base64').toString('utf-8');
-        
-            fs.writeFile(IMG_PATH + `${d.productName}.png`, decode, err => {
-                if(err) {
-                    console.log(err);
-                    return
-                }
-            });
-        }
-        
         res.status(status).json({ error, data, msg }).end();
 
         next();
