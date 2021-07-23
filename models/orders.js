@@ -5,6 +5,7 @@ const { PRODUCT_MODEL } = require('./products');
 const FIELDS = {
     PRODUCT_ID: 'productId',
     QUANTITY: 'quantity',
+    TOTAL_COST: 'totalCost',
     ORDERED_BY: 'orderedBy',
     ORDERED_ON: 'orderedOn',
     UPDATED_BY: 'updatedBy',
@@ -15,6 +16,7 @@ const FIELDS = {
 const SCHEMA = {
     [FIELDS.PRODUCT_ID]: { type: Schema.Types.ObjectId, required: true, ref: 'Product'},
     [FIELDS.QUANTITY]: { type: Number, required: true },
+    [FIELDS.TOTAL_COST]: { type: Number },
     [FIELDS.ORDERED_BY]: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     [FIELDS.ORDERED_ON]: { type: Date, default: Date.now },
     [FIELDS.UPDATED_BY]: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -23,6 +25,15 @@ const SCHEMA = {
 };
 
 const orderSchema = new Schema(SCHEMA);
+
+orderSchema.pre('save', async function(next) {
+
+    this.totalCost = await PRODUCT_MODEL.findOne({ '_id': this.productId})
+    .then(result => { return result.price * this.quantity + result.shippingCharges })
+    .catch(error => { console.log(error) });
+
+    next();
+});
 
 orderSchema.set('toJSON', {
     virtuals: true,
