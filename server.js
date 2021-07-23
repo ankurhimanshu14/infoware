@@ -13,10 +13,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true
-  }));
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true
+}));
 
 app.use('/api/v1', v1Routes);
 

@@ -1,6 +1,7 @@
 const Schema = require('../config/db');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const userVal = require('../validators/usersValidator');
 
 const FIELDS = {
     TITLE: 'title',
@@ -21,30 +22,87 @@ const FIELDS = {
 };
 
 const SCHEMA = {
-    [FIELDS.TITLE]: { type: String, enum: ['Mr.', 'Mrs.', 'Ms.', 'Dr.'] },
-    [FIELDS.FIRST_NAME]: { type: String, required: true },
-    [FIELDS.MIDDLE_NAME]: { type: String },
-    [FIELDS.LAST_NAME]: { type: String, required: true },
-    [FIELDS.GENDER]: { type: String, enum: [ 'Male', 'Female', 'Other' ] },
-    [FIELDS.CONTACT]: { type: Number, required: true, unique: true, validate: {
-        validator: function(v) {
-            return /\d{10}/.test(v)
-        },
-        message: props => `${props.value} is not a valid phone number!`
-    }},
-    [FIELDS.DELIVERY_ADD]: { type: String, required: true },
-    [FIELDS.EMAIL]: { type: String, required: true, unique: true },
-    [FIELDS.USERNAME]: { type: String, required: true, unique: true },
-    [FIELDS.PASSWORD]: { type: String, required: true },
-    [FIELDS.USER_TYPE]: { type: String, enum: [ 'admin', 'user' ], required: true, default: 'user' },
-    [FIELDS.EMPLOYEE_ID]: { type: String },
-    [FIELDS.CREATED_ON]: { type: Date, default: Date.now },
-    [FIELDS.UPDATED_BY]:  { type: Schema.Types.ObjectId, ref: 'User' },
-    [FIELDS.UPDATED_ON]: { type: Date },
+    [FIELDS.TITLE]: {
+        type: String,
+        enum: ['Mr.', 'Mrs.', 'Ms.', 'Dr.']
+    },
+    [FIELDS.FIRST_NAME]: {
+        type: String,
+        required: true,
+        validate: {
+            validator: userVal.validateNames,
+            message: props => `${props.value} is not a valid name string!`
+        }
+    },
+    [FIELDS.MIDDLE_NAME]: {
+        type: String,
+        validate: {
+            validator: userVal.validateNames,
+            message: props => `${props.value} is not a valid name string!`
+        }
+    },
+    [FIELDS.LAST_NAME]: {
+        type: String,
+        required: true,
+        validate: {
+            validator: userVal.validateNames,
+            message: props => `${props.value} is not a valid name string!`
+        }
+    },
+    [FIELDS.GENDER]: {
+        type: String,
+        enum: [ 'Male', 'Female', 'Other' ]
+    },
+    [FIELDS.CONTACT]: {
+        type: Number,
+        required: true,
+        validate: {
+            validator: userVal.validatePhoneNumbers,
+            message: props => `${props.value} is not a valid phone number!`
+        }
+    },
+    [FIELDS.DELIVERY_ADD]: {
+        type: String,
+        required: true
+    },
+    [FIELDS.EMAIL]: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    [FIELDS.USERNAME]: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    [FIELDS.PASSWORD]: {
+        type: String,
+        required: true,
+        min: 8
+    },
+    [FIELDS.USER_TYPE]: {
+        type: String,
+        enum: [ 'admin', 'user' ],
+        required: true,
+        default: 'user'
+    },
+    [FIELDS.EMPLOYEE_ID]: {
+        type: String
+    },
+    [FIELDS.CREATED_ON]: {
+        type: Date,
+        default: Date.now
+    },
+    [FIELDS.UPDATED_BY]: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    [FIELDS.UPDATED_ON]: {
+        type: Date
+    }
 };
 
 const userSchema = new Schema(SCHEMA);
-
 
 //Password encryption
 userSchema.pre('save', async function(next) {
