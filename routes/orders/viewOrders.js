@@ -32,7 +32,7 @@ module.exports = {
         } else {
             req._orderDetails = await  ORDER_MODEL.findOne({ 'orderedBy': req._decrypt.userId })
             .then(result => {
-                return { status: 200, error: null, data: [result], msg: 'orders Found' }
+                return { status: 200, error: null, data: [result], msg: 'Orders Found' }
             })
             .catch(err => {
                 return { status: 400, error: err, data: null, msg: 'Error in fetching order' }
