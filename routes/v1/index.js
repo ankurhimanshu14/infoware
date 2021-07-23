@@ -15,7 +15,7 @@ router.post('/products/registration', auth, productRegistration.verifyUser, prod
 router.post('/products/view', auth, productBrowse.fetchFromMongo, productBrowse.response);
 
 //ORDER
-router.post('/orders/new', auth, createOrders.fetchData, createOrders.saveToMongo, createOrders.response);
+router.post('/orders/new', auth, createOrders.verifyUser, createOrders.fetchData, createOrders.saveToMongo, createOrders.response);
 router.get('/orders/view', auth, viewOrders.verifyUser, viewOrders.fetchFromMongo, viewOrders.response);
 
 module.exports = router;
