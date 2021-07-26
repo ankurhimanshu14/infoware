@@ -1,7 +1,9 @@
+require('dotenv').config();
+
 const paytmConfig = {
-    mid: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    key: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-    website: 'XXXXXXXXXXXXXXXXXXX'
+    mid: process.env.PATYM_MID,
+    key: process.env.PAYTM_KEY,
+    website: process.env.PAYTM_WEBSITE
 };
 
 module.exports.paytmConfig = paytmConfig;
