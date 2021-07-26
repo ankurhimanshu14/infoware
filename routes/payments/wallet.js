@@ -3,6 +3,7 @@ const https = require('https');
 const PaytmChecksum = require('./PaytmChecksum');
 const firebase = require('firebase');
 
+require('../../config/firebase');
 let db = firebase.database();
 
 module.exports = {
@@ -32,7 +33,6 @@ module.exports = {
     },
 
     fetchOrderDetails: (req, res, next) => {
-        let db = firebase.database();
         req._order = db.ref().child("Orders").once("value", (snapshot) => {
             if(snapshot.val() === null) {
                 res.json(
@@ -60,7 +60,7 @@ module.exports = {
         let paytmParams = {};
 
         paytmParams["subwalletGuid"] = "";
-        paytmOrderId["orderId"] = req._order.orderId;
+        paytmParams["orderId"] = "23523532345";
         paytmParams["beneficiaryPhoneNo"] = req._user.phoneNo;
         paytmParams["amount"] = req.body.amount;
 

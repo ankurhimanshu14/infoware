@@ -21,7 +21,7 @@ router.post('/orders/new', auth, createOrders.verifyUser, createOrders.fetchData
 router.get('/orders/view', auth, viewOrders.verifyUser, viewOrders.fetchFromMongo, viewOrders.response);
 
 //PAYMENT
-router.post('./payments.payNow', wallet.fetchUserDetails, wallet.fetchOrderDetails, wallet.setPaytmParams, wallet.checkSum, wallet.saveTxnToFirebase);
+router.post('/payments/payNow', auth, wallet.fetchUserDetails, wallet.fetchOrderDetails, wallet.setPaytmParams, wallet.checkSum, wallet.saveTxnToFirebase);
 // router.post('/payments/payNow', auth, pay.verifyUser, pay.fetchPaymentDetails, pay.setPaytmParams, pay.checkSum);
 // router.post('/payments/callback', auth, callback.callback);
 
