@@ -1,4 +1,5 @@
 module.exports = {
-    pay: require('./pay'),
-    callback: require('./callback')
+    wallet: require('./wallet')
+    // pay: require('./pay'),
+    // callback: require('./callback')
 }
